@@ -1,44 +1,37 @@
-<header>
-  <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
-    <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">Blockcore.DataVault</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
-        [ngClass]="{ show: isExpanded }"
-      >
-        <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<header class="header dropdown">
+  <a class="header-logo" [routerLink]="['/']"><img class="header-image" [ngClass]="{'mode-aware': setup.Chain?.IconFilter}" [src]="setup.Chain?.Icon"></a>
+  <a class="header-title" [routerLink]="['/']">{{setup.Chain?.Name}}<br>Hub</a>
+
+  <div *ngIf="setup.multiChain" class="dropdown-content chains">
+    <ul>
+      <li class="chain-item" *ngFor="let chain of setup.chains">
+        <a class="chain-link" [routerLink]="[chain.symbol.toLowerCase()]"><img [ngClass]="{'mode-aware': chain.filter}" [src]="chain.icon"></a>
+        <a class="chain-link" [routerLink]="[chain.symbol.toLowerCase()]">{{chain.name}}</a>
+      </li>
+    </ul>
+  </div>
 </header>
+
+<nav class="menu">
+  <ul *ngIf="setup.current != 'BLOCKCORE'">
+    <li class="nav-item" *ngIf="setup.featureEnabled(setup.Explorer?.Features?.Ticker)">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }"
+        [routerLink]="[setup.current]">Dashboard</a>.
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="[setup.current, 'hubs']">Hubs</a>.
+    </li>
+    <li class="nav-item" *ngIf="setup.featureEnabled(setup.Explorer?.Features?.Explorer)">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="[setup.current, 'explorer']">Explorer</a>.
+    </li>
+    <li class="nav-item" *ngIf="setup.featureEnabled(setup.Explorer?.Features?.Network)">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="[setup.current, 'network']">Network</a>.
+    </li>
+    <li class="nav-item" *ngIf="setup.featureEnabled(setup.Explorer?.Features?.API)">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="[setup.current, 'api']">API</a>.
+    </li>
+    <li class="nav-item" *ngIf="setup.featureEnabled(setup.Explorer?.Features?.About)">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="[setup.current, 'about']">About</a>.
+    </li>
+  </ul>
+</nav>

@@ -1,18 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
+import { SetupService } from '../services/setup.service';
 
 @Component({
   selector: 'app-nav-menu',
-  templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.css']
+  templateUrl: './nav-menu.component.html'
 })
 export class NavMenuComponent {
-  isExpanded = false;
+  @HostBinding('attr.ngNoHost') noHost = '';
 
-  collapse() {
-    this.isExpanded = false;
+  showList: boolean;
+
+  constructor(public setup: SetupService) {
+
   }
 
-  toggle() {
-    this.isExpanded = !this.isExpanded;
+  onMouseOver() {
+    this.showList = true;
+    return false;
   }
+
+  onMouseOut() {
+    this.showList = false;
+    return false;
+  }
+
+
 }
